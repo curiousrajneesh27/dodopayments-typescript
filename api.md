@@ -1,5 +1,5 @@
 # CheckoutSessions
-
+> **Note on Language Customization:** When using `force_language` in iframe/overlay checkouts on Chromium browsers, you may need to append the language as a URL parameter. See the [Language Workaround Guide](ISSUE_178_ANALYSIS.md) or use the `enhanceCheckoutUrl()` utility function.
 Types:
 
 - <code><a href="./src/resources/checkout-sessions.ts">CheckoutSessionRequest</a></code>

@@ -65,6 +65,41 @@ const checkoutSessionResponse: DodoPayments.CheckoutSessionResponse =
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
+## Language Customization for Checkout
+
+You can force the checkout interface to display in a specific language:
+
+```ts
+const checkoutSession = await client.checkoutSessions.create({
+  product_cart: [{ product_id: 'product_id', quantity: 1 }],
+  customization: {
+    force_language: 'de', // German (supports: en, de, es, fr, it, pt, etc.)
+    theme: 'system',
+  },
+});
+```
+
+### Known Issue: Chromium Overlay Language (Issue #178)
+
+When using overlay/iframe checkout in Chromium-based browsers (Chrome, Brave, Edge), the language may not apply correctly. **Workaround:**
+
+```ts
+import { enhanceCheckoutUrl } from 'dodopayments/lib/checkout-utils';
+
+const session = await client.checkoutSessions.create({
+  product_cart: [{ product_id: 'product_id', quantity: 1 }],
+  customization: { force_language: 'de' },
+});
+
+// Append language to URL for Chromium compatibility
+const checkoutUrl = enhanceCheckoutUrl(session.checkout_url, { language: 'de' });
+
+// Now use checkoutUrl for redirect or iframe
+window.location.href = checkoutUrl;
+```
+
+See `examples/checkout-with-language.ts` for complete examples.
+
 ## Handling errors
 
 When the library is unable to connect to the API,
